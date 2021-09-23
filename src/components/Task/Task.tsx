@@ -1,5 +1,15 @@
 import { Draggable } from "react-beautiful-dnd";
 
+interface IProps {
+  task: any;
+  index: number;
+  toggleEditTask: any;
+  saveEditTask: any;
+  onKeyDownEdit: any;
+  toggleDoneTask: any;
+  removeTask: any;
+}
+
 function Task({
   task,
   index,
@@ -8,7 +18,7 @@ function Task({
   onKeyDownEdit,
   toggleDoneTask,
   removeTask,
-}) {
+}: IProps): JSX.Element {
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(draggableProvided) => (

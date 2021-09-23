@@ -1,9 +1,25 @@
+import { ReactElement } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { v4 as uuid } from "uuid";
 
 import taskSchema from "./task-schema";
 
-function addTaskDetails(task) {
+// interface ITask {
+//   id: string
+//   text: string
+//   done: string
+//   isEditing: boolean
+//   updatedAt: string
+//   createdAt: string
+// }
+
+interface IProps {
+  saveNewTask: any;
+  onKeyDownSubmit: any;
+}
+
+// @joan ==> No sé què assignar a task
+function addTaskDetails(task: any): void {
   return {
     id: uuid(),
     ...task,
@@ -17,7 +33,7 @@ function addTaskDetails(task) {
 function NewTaskForm({
   saveNewTask,
   onKeyDownSubmit
-}) {
+}: IProps): ReactElement {
   return (
     <div className="card">
       <div className="card-body">

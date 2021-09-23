@@ -1,5 +1,24 @@
 import { Droppable } from "react-beautiful-dnd";
-import { Task } from "../../components";
+
+import { Task } from "components";
+
+interface IProps {
+  filteredTasks: any;
+  toggleEditTask: any;
+  saveEditTask: any;
+  onKeyDownEdit: any;
+  toggleDoneTask: any;
+  removeTask: any;
+}
+
+interface ITask {
+  id: string;
+  text: string;
+  done: string;
+  isEditing: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
 
 function TasksList({
   filteredTasks,
@@ -8,13 +27,13 @@ function TasksList({
   onKeyDownEdit,
   toggleDoneTask,
   removeTask,
-}) {
+}: IProps): JSX.Element {
   return (
     <Droppable droppableId="tasks">
       {(droppableProvided) => (
         <ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef}>
           {filteredTasks &&
-            filteredTasks.map((task, index) => (
+            filteredTasks.map((task: ITask, index: number) => (
               <Task
                 task={task}
                 index={index}
@@ -26,7 +45,7 @@ function TasksList({
                 removeTask={removeTask}
               />
             ))}
-            {droppableProvided.placeholder}
+          {droppableProvided.placeholder}
         </ul>
       )}
     </Droppable>

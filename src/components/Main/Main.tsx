@@ -1,3 +1,4 @@
+import { ReactElement, ReactNode, ReactChild } from 'react';
 import styled from "styled-components";
 
 const MainPage = styled.main`
@@ -11,7 +12,12 @@ const MainPage = styled.main`
   min-width: 100vw;
 `;
 
-function Main({ children, ...props }) {
+type Props = {
+  children: ReactNode;
+  className: string;
+};
+
+function Main({ children, ...props }: Props): ReactElement {
   return <MainPage {...props}>{children}</MainPage>;
 }
 

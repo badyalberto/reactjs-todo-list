@@ -1,11 +1,27 @@
+import { ReactElement } from 'react';
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { Main, TasksList, NewTaskForm, Footer, Toggle } from "../../components";
+import "utils/Array.js";
 
-Array.prototype.move = function (from, to) {
-  this.splice(to, 0, this.splice(from, 1)[0]);
-};
+import { Main, TasksList, NewTaskForm, Footer, Toggle } from "components";
+
+interface IProps {
+  tasks: any;
+  theme: string;
+  filteredTasks: any;
+  changeTheme: any;
+  saveNewTask: any;
+  saveOrderTasks: any;
+  onKeyDownSubmit: any;
+  toggleEditTask: any;
+  saveEditTask: any;
+  onKeyDownEdit: any;
+  toggleDoneTask: any;
+  removeTask: any;
+  filterTasks: any;
+  removeAllCompletedTasks: any;
+}
 
 const Section = styled.section`
   max-width: 600px;
@@ -28,7 +44,7 @@ function Home({
   removeTask,
   filterTasks,
   removeAllCompletedTasks,
-}) {
+}: IProps): ReactElement {
   return (
     <Main className="main container pt-5">
 
