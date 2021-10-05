@@ -5,6 +5,8 @@ import { Home } from "pages";
 
 // import { LightTheme, DarkTheme } from "themes";
 
+// declare module "styled-components" {}
+
 const themes = require("themes")
 const LightTheme = themes.LightTheme;
 const DarkTheme = themes.DarkTheme;
@@ -20,23 +22,23 @@ interface IProps { }
 interface IState {
   theme: string;
   status: string;
-  tasks: ITasks[];
-  filteredTasks: ITasks[];
+  tasks: ITask[];
+  filteredTasks: ITask[];
   isLoading?: boolean;
 }
 
-interface ITasks {
-  tasks: ITask[];
-}
+// interface ITasks {
+//   tasks: ITask[];
+// }
 
 interface IPrevItems {
-  tasks: ITasks[];
+  tasks: ITask[];
 }
 
 interface ITask {
   id: string;
   text: string;
-  done: string;
+  done: boolean;
   isEditing: boolean;
   updatedAt: string;
   createdAt: string;
@@ -94,7 +96,7 @@ class App extends Component<IProps, IState> {
       return;
     }
 
-    const { tasks }: { tasks: ITasks[] } = prevItems;
+    const { tasks }: { tasks: ITask[] } = prevItems;
 
     this.setState({
       status: "all",
@@ -108,13 +110,13 @@ class App extends Component<IProps, IState> {
 
     // @joan ==> prevState li he posat IState. S'ha de posar a cada setState?
     if (theme === "light") {
-      this.setState((prevState: IState) => ({
+      this.setState((prevState: IState): IState => ({
         ...prevState,
         theme: 'dark',
       }));
     }
     if (theme === "dark") {
-      this.setState((prevState: IState) => ({
+      this.setState((prevState: IState): IState => ({
         ...prevState,
         theme: 'light',
       }));
@@ -122,7 +124,7 @@ class App extends Component<IProps, IState> {
   }
 
   componentDidUpdate = (): void => {
-    const { tasks }: { tasks: ITasks[]; } = this.state;
+    const { tasks }: { tasks: ITask[]; } = this.state;
 
     localStorage.setItem(
       LOCAL_STORAGE_KEY,
@@ -131,7 +133,7 @@ class App extends Component<IProps, IState> {
   }
 
   // @joan ==> No sé què és el handleSubmit. No em deixa fer FormElement
-  onKeyDownSubmit = (e: HTMLInputEvent, handleSubmit: any): void => {
+  onKeyDownSubmit = (e: HTMLInputEvent, handleSubmit: () => void): void => {
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -150,14 +152,14 @@ class App extends Component<IProps, IState> {
     }
   };
 
-  saveOrderTasks = (tasks: ITasks[]): void => {
+  saveOrderTasks = (tasks: ITask[]): void => {
     this.setState((prevState: IState) => ({
       ...prevState,
       tasks: tasks,
     }));
   }
 
-  saveNewTask = (newTask: ITasks): void => {
+  saveNewTask = (newTask: ITask): void => {
     this.setState((prevState: IState) => ({
       ...prevState,
       tasks: [newTask, ...prevState.tasks],
@@ -168,10 +170,10 @@ class App extends Component<IProps, IState> {
   saveEditTask = (e: HTMLInputEvent, taskId: string): void => {
     e.preventDefault();
 
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
     // @joan ==> No sé què assignar a task
-    tasks.map<void>((task: any) => {
+    tasks.map<void>((task: ITask) => {
       if (task.id === taskId) {
         task.text = e.target.value;
         task.updatedAt = new Date().toISOString();
@@ -187,9 +189,9 @@ class App extends Component<IProps, IState> {
   toggleDoneTask = (e: MouseEvent, taskId: string): void => {
     e.preventDefault();
 
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
-    tasks.map<void>((task: any) => {
+    tasks.map<void>((task: ITask) => {
       task.id === taskId ? (task.done = !task.done) : null;
     });
 
@@ -202,9 +204,9 @@ class App extends Component<IProps, IState> {
   toggleEditTask = (e: KeyboardElement, taskId: string): void => {
     e.preventDefault();
 
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
-    tasks.map<void>((task: any) => {
+    tasks.map<void>((task: ITask) => {
       task.id === taskId ? (task.isEditing = !task.isEditing) : null;
     });
 
@@ -217,9 +219,9 @@ class App extends Component<IProps, IState> {
   removeTask = (e: MouseEvent, taskId: string): void => {
     e.preventDefault();
 
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
-    const newTasks = tasks.filter((task: any) => task.id !== taskId);
+    const newTasks = tasks.filter((task: ITask) => task.id !== taskId);
 
     this.setState((prevState: IState) => ({
       ...prevState,
@@ -231,9 +233,9 @@ class App extends Component<IProps, IState> {
   removeAllCompletedTasks = (e: MouseEvent): void => {
     e.preventDefault();
 
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
-    const newTasks = tasks.filter((task: any) => task.done !== true);
+    const newTasks = tasks.filter((task: ITask) => task.done !== true);
 
     this.setState((prevState: IState) => ({
       ...prevState,
@@ -243,16 +245,16 @@ class App extends Component<IProps, IState> {
   };
 
   filterTasks = (status: string): void => {
-    const { tasks }: { tasks: ITasks[] } = this.state;
+    const { tasks }: { tasks: ITask[] } = this.state;
 
-    let filteredTasks: ITasks[];
+    let filteredTasks: ITask[];
 
     status === "all" ? (filteredTasks = tasks) : null;
     status === "active"
-      ? (filteredTasks = tasks.filter((task: any) => task.done === false))
+      ? (filteredTasks = tasks.filter((task: ITask) => task.done === false))
       : null;
     status === "complete"
-      ? (filteredTasks = tasks.filter((task: any) => task.done === true))
+      ? (filteredTasks = tasks.filter((task: ITask) => task.done === true))
       : null;
 
     this.setState((prevState: IState) => ({
