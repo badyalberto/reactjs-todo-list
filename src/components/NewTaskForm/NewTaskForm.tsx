@@ -23,7 +23,6 @@ interface MinTask {
   done: boolean;
 }
 
-// @joan ==> No sé què assignar a task
 function addTaskDetails(task: MinTask): ITask {
   return {
     id: uuid(),

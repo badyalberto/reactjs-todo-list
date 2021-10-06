@@ -12,12 +12,10 @@ const DarkTheme: DefaultTheme = {
   tagLineColor: "lavender"
 }
 
-// export const themes = {
-//   light: LightTheme,
-//   dark: DarkTheme,
-// }
-
-export {
-  LightTheme,
-  DarkTheme,
+const themes = {
+  light: LightTheme,
+  dark: DarkTheme,
 }
+
+export default themes;
+

@@ -1,15 +1,9 @@
-import { Component, ReactElement, MouseEvent } from "react";
-import { ThemeProvider } from "styled-components";
+import { Component, MouseEvent } from "react";
+import { ThemeProvider, DefaultTheme } from "styled-components";
 
 import { Home } from "pages";
 
-// import { LightTheme, DarkTheme } from "themes";
-
-// declare module "styled-components" {}
-
-const themes = require("themes")
-const LightTheme = themes.LightTheme;
-const DarkTheme = themes.DarkTheme;
+import themes from './themes';
 
 import * as api from "./api";
 
@@ -27,10 +21,6 @@ interface IState {
   isLoading?: boolean;
 }
 
-// interface ITasks {
-//   tasks: ITask[];
-// }
-
 interface IPrevItems {
   tasks: ITask[];
 }
@@ -43,8 +33,6 @@ interface ITask {
   updatedAt: string;
   createdAt: string;
 }
-
-type FormElement = React.FormEvent<HTMLFormElement>;
 
 type KeyboardElement = React.KeyboardEvent<HTMLDivElement>;
 
@@ -108,7 +96,6 @@ class App extends Component<IProps, IState> {
   changeTheme = (): void => {
     const { theme }: { theme: string; } = this.state;
 
-    // @joan ==> prevState li he posat IState. S'ha de posar a cada setState?
     if (theme === "light") {
       this.setState((prevState: IState): IState => ({
         ...prevState,
@@ -132,7 +119,6 @@ class App extends Component<IProps, IState> {
     )
   }
 
-  // @joan ==> No sé què és el handleSubmit. No em deixa fer FormElement
   onKeyDownSubmit = (e: HTMLInputEvent, handleSubmit: () => void): void => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -172,7 +158,6 @@ class App extends Component<IProps, IState> {
 
     const { tasks }: { tasks: ITask[] } = this.state;
 
-    // @joan ==> No sé què assignar a task
     tasks.map<void>((task: ITask) => {
       if (task.id === taskId) {
         task.text = e.target.value;
@@ -267,14 +252,7 @@ class App extends Component<IProps, IState> {
   render() {
     const { tasks, filteredTasks, theme } = this.state;
 
-    // console.log(<LightTheme />)
-
-    // const LightTheme = themes.LightTheme;
-    // const DarkTheme = themes.LightTheme;
-
-    console.log(theme)
-
-    const selectedTheme: ReactElement = theme === "light" ? <LightTheme /> : <DarkTheme />;
+    const selectedTheme: DefaultTheme = theme === 'light' ? themes.light : themes.dark;
 
     return (
       <ThemeProvider theme={selectedTheme}>
